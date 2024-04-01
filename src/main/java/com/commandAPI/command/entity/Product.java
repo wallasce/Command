@@ -19,6 +19,8 @@ public class Product {
     @Column(nullable = false)
     private int serves;
 
+    public Product(){}
+
     public Product(String name, String category, double price, String description, int serves) {
         this.name = name;
         this.category = category;
