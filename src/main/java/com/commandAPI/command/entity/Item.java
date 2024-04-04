@@ -2,6 +2,9 @@ package com.commandAPI.command.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Entity
 @Table(name = "item")
 public class Item {
@@ -67,5 +70,9 @@ public class Item {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public List<State> getStates() {
+        return Arrays.asList(State.values());
     }
 }
