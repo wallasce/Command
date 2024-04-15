@@ -31,7 +31,9 @@ public class Item {
         DELIVERED
     }
 
-    public Item() {}
+    public Item() {
+        this.state = State.PREPARING;
+    }
 
     public Item(Product product, Integer quantity, String observation) {
         this.product = product;

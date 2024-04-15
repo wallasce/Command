@@ -1,7 +1,9 @@
 package com.commandAPI.command.service;
 
 import com.commandAPI.command.entity.Item;
+import com.commandAPI.command.entity.Product;
 import com.commandAPI.command.repository.ItemRepository;
+import com.commandAPI.command.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,14 +12,23 @@ import java.util.Optional;
 @Service
 public class ItemService {
     private final ItemRepository itemRepository;
+    private final ProductService productService;
 
-    public ItemService(ItemRepository itemRepository) {
+    public ItemService(ItemRepository itemRepository, ProductService productService) {
         this.itemRepository = itemRepository;
+        this.productService = productService;
     }
 
-    public Item SaveItem(Item item) {
+    public Item SaveItem(Item item, Long productID) {
         try {
-            return itemRepository.save(item);
+            Optional<Product> referencedProduct = productService.fetchProductById(productID);
+            if (referencedProduct.isPresent()) {
+                item.setProduct(referencedProduct.get());
+                return itemRepository.save(item);
+            } else {
+                throw new RuntimeException("Product " + productID + " does not exists");
+            }
+
         } catch (Exception e) {
             throw new RuntimeException("Failed to save item: "+ e.getMessage());
         }
